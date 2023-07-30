@@ -2,13 +2,15 @@ from __future__ import annotations
 
 import time
 
-from src.Marugo.services.instagram import SEARCH_RESULTS
-from src.Marugo.services.instagram import SEARCH_RESULTS_HASHTAG_FOLLOW
-from src.Marugo.services.instagram import SEARCH_RESULTS_POSTS
-from src.Marugo.services.instagram import SEARCH_RESULTS_POSTS_COMMENTS
-from src.Marugo.services.instagram import SEARCH_RESULTS_POSTS_FOLLOW
-from src.Marugo.services.instagram import SEARCH_RESULTS_POSTS_LIKE
-from src.Marugo.services.instagram import SEARCH_RESULTS_PUBLISH_COMMENT
+from src.Marugo.services.instagram import (
+    SEARCH_RESULTS,
+    SEARCH_RESULTS_HASHTAG_FOLLOW,
+    SEARCH_RESULTS_POSTS,
+    SEARCH_RESULTS_POSTS_COMMENTS,
+    SEARCH_RESULTS_POSTS_FOLLOW,
+    SEARCH_RESULTS_POSTS_LIKE,
+    SEARCH_RESULTS_PUBLISH_COMMENT,
+)
 from src.Marugo.services.instagram.menu import Menu
 
 
@@ -54,13 +56,14 @@ class EngageByHashtag:
 
         search_elements = self.robot.get_webelements(SEARCH_RESULTS)
         first_result = search_elements[0]
-        self.robot.click_element(first_result)
-        time.sleep(2)
+        self.robot.click_element_when_clickable(first_result)
+        time.sleep(7)
 
         self.logger.info("First result clicked")
 
     def get_posts_links(self):
         self.logger.info("Getting posts links")
+        time.sleep(2)
         posts_elements_status = self.robot.get_element_status(SEARCH_RESULTS_POSTS)
         if posts_elements_status.get("visible") == False:
             time.sleep(3)
@@ -71,12 +74,26 @@ class EngageByHashtag:
 
         self.logger.info("Posts links gotten")
 
+    def check_if_posts_already_liked(self) -> bool:
+        "const divElement = document.querySelector('div.x6s0dn4 x78zum5 xdt5ytf xl56j7k'); "
+        javascript_code = """
+            const svgElement = document.querySelector('.xp7jhwk svg');
+            const titleElement = svgElement.querySelector('title');
+            const titleValue = titleElement.textContent;
+            return titleValue;
+        """
+        title_value = self.robot.driver.execute_script(javascript_code)
+        if title_value.lower() == "curtir":
+            return False
+        else:
+            return True
+
     def like_posts(self):
         self.logger.info("Liking post")
 
         time.sleep(3)
         like_element_status = self.robot.get_element_status(SEARCH_RESULTS_POSTS_LIKE)
-        if like_element_status.get("visible") == True:
+        if self.check_if_posts_already_liked() == False:
             self.robot.click_element_when_clickable(SEARCH_RESULTS_POSTS_LIKE)
             self.logger.info("Post liked")
         else:
