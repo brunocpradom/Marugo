@@ -35,7 +35,7 @@ def main():
             engage = EngageByHashtag(robot, logger)
             engage.start(hashtag)
 
-        insta.logout()
+        #insta.logout()
         insta.close_browser()
 
         logger.info(f"Next execution : {datetime.now() + timedelta(hours=10)}")
