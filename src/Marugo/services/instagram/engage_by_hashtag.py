@@ -99,7 +99,6 @@ class EngageByHashtag:
         else:
             self.logger.warning("Post already liked")
 
-        self.logger.info("Post liked")
 
     def follow_hashtag(self):
         follow_element_status = self.robot.get_element_status(SEARCH_RESULTS_HASHTAG_FOLLOW)
