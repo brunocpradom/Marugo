@@ -7,18 +7,11 @@ from RPA.Browser.Selenium import By
 from RPA.Browser.Selenium import Selenium
 
 from src.Marugo.config import Config
-from src.Marugo.dto.menu import MenuOptionsXpaths
-from src.Marugo.services.instagram import SEARCH_RESULTS
-from src.Marugo.services.instagram import SEARCH_RESULTS_POSTS
-from src.Marugo.services.instagram import SEARCH_RESULTS_POSTS_COMMENTS
-from src.Marugo.services.instagram import SEARCH_RESULTS_POSTS_FOLLOW
-from src.Marugo.services.instagram import SEARCH_RESULTS_POSTS_LIKE
-from src.Marugo.services.instagram import SEARCH_RESULTS_PUBLISH_COMMENT
 from src.Marugo.services.instagram.menu import Menu
 
 class Instagram:
     """
-        This clas implement functinality to interact with instagram webpage
+        This class implement functinality to interact with instagram webpage
 
         Considerations:
             - When the user make the first action, like follow someone, instagram will
@@ -59,9 +52,9 @@ class Instagram:
     def refresh_menu_xpaths(self):
         self.menu_xpaths = self.menu.get_xpaths(self.robot)
 
-    def open_browser(self):
+    def open_browser(self, headless : bool = False):
         self.logger.info("Open browser for user")
-        self.robot.open_available_browser(self.url)
+        self.robot.open_available_browser(self.url, headless=headless)
         self.logger.info("Browser opened")
 
     def close_browser(self):
@@ -118,37 +111,9 @@ class Instagram:
 
     def click_dont_activate_notifications(self):
         dont_activate_notifications_button = "xpath://button[@class='_a9-- _a9_1']"
-        element = self.robot.find_element(dont_activate_notifications_button)
-        self.robot.click_element_when_clickable(element)
+        self.robot.click_element_if_visible(dont_activate_notifications_button)
 
-    def make_search(self, search_term):
-        self.click_search_button()
-        search_input_xpath = "//input[@placeholder='Pesquisar']"
-        self.robot.input_text(search_input_xpath, search_term)
-        time.sleep(1) #Wait for the search results
-        #Click the first one
-        search_elements = self.robot.get_webelements(SEARCH_RESULTS)
-        first_result = search_elements[0]
-        self.robot.click_element(first_result)
-        time.sleep(2)
-        #navigate throught the posts with this hashtag
-        posts_links = list()
-        posts = self.robot.get_webelements(SEARCH_RESULTS_POSTS)
-        for post in posts:
-            post_link = post.get_attribute("href")
-            posts_links.append(post_link)
-
-        for link in posts_links:
-            self.robot.go_to(link)
-            time.sleep(2)
-            self.robot.click_element_when_clickable(SEARCH_RESULTS_POSTS_FOLLOW)
-            time.sleep(1)
-            self.robot.click_element_when_clickable(SEARCH_RESULTS_POSTS_LIKE)
-            time.sleep(2)
-            SEARCH_RESULTS_POSTS_COMMENTS
-            self.robot.input_text(SEARCH_RESULTS_POSTS_COMMENTS, "❤️")
-            self.robot.click_element_when_clickable(SEARCH_RESULTS_PUBLISH_COMMENT)
-
+    
 
 
     def discovering(self):
@@ -197,3 +162,33 @@ class Instagram:
         for element in elements:
             #todo - Here I need to create a random logic that click on the follow button of some profiles, but not from all
             self.robot.click_element("xpath:.//button[@class='_acan _acap _acas _aj1-']")
+
+
+#def make_search(self, search_term):
+    #     self.click_search_button()
+    #     search_input_xpath = "//input[@placeholder='Pesquisar']"
+    #     self.robot.input_text(search_input_xpath, search_term)
+    #     time.sleep(1) #Wait for the search results
+    #     #Click the first one
+    #     search_elements = self.robot.get_webelements(SEARCH_RESULTS)
+    #     first_result = search_elements[0]
+    #     self.robot.click_element(first_result)
+    #     time.sleep(2)
+    #     #navigate throught the posts with this hashtag
+    #     posts_links = list()
+    #     posts = self.robot.get_webelements(SEARCH_RESULTS_POSTS)
+    #     for post in posts:
+    #         post_link = post.get_attribute("href")
+    #         posts_links.append(post_link)
+
+    #     for link in posts_links:
+    #         self.robot.go_to(link)
+    #         time.sleep(2)
+    #         self.robot.click_element_when_clickable(SEARCH_RESULTS_POSTS_FOLLOW)
+    #         time.sleep(1)
+    #         self.robot.click_element_when_clickable(SEARCH_RESULTS_POSTS_LIKE)
+    #         time.sleep(2)
+    #         SEARCH_RESULTS_POSTS_COMMENTS
+    #         self.robot.input_text(SEARCH_RESULTS_POSTS_COMMENTS, "❤️")
+    #         self.robot.click_element_when_clickable(SEARCH_RESULTS_PUBLISH_COMMENT)
+
