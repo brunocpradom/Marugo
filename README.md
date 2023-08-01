@@ -1,22 +1,35 @@
-# Template: Python - Minimal
+# Marugo
+## Instagram bot
 
-This template leverages the new Python open-source structure [robo](https://github.com/robocorp/robo), the [libraries](https://github.com/robocorp/robo#libraries) from to same project as well.
-The full power of [rpaframework](https://github.com/robocorp/rpaframework) is also available for you on Python as a backup while we implement new Python libraries.
+This is a simple scrapper that login in instagram, search by hashtags, follow profiles and like posts automatically. 
 
-The template provides you with the basic structure of a Python project: logging out of the box and controlling your tasks without fiddling with the base Python stuff. The environment contains the most used libraries, so you do not have to start thinking about those right away.
+## Setting up the environment:
 
-👉 After running the bot, check out the `log.html` under the `output` -folder.
+ - Make sure you have python 3.9 or higher installed
 
-The template here is essentially empty, leaving you with a canvas to paint on.
+ - Make sure you have the chromedriver installed and matching your chrome version
 
-Do note that with Robocorp tooling you:
-- Do NOT need Python installed
-- Should NOT be writing `pip install..`; the [conda.yaml](https://github.com/robocorp/template-python/blob/master/conda.yaml) is here for a reason.
-- You do not need to worry about Python's main -functions and, most importantly, the logging setup
+Create the environment
+```
+python3 -m venv venv
+```
+Activate the environment:
+```
+source venv/bin/activate
+```
+Install de dependencies:
+```
+pip install -r requirements.txt
+```
+## Defining the attributtes to run the scrapper
+Create a .env file based on env.credentials, and set the search variables :
+    - USERNAME
+    - PASSWORD
+    - HASHTAGS (Split by comma. Ex: "#music,#mpb,#mpbbrasil)
+    - PERIOD (in hours)
 
-🚀 Now, go get'em
+## Start the scrapper
+Run tasks.py
 
-For more information, do not forget to check out the following:
-* [Robocorp Documentation -site](https://robocorp.com/docs)
-* [Portal for more examples](https://robocorp.com/portal)
-* [robo repo](https://github.com/robocorp/robo) as this will developed a lot...
+#### Obs:
+This project is ready to deploy in Robocorp Cloud [https://cloud.robocorp.com/]
