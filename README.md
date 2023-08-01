@@ -23,10 +23,10 @@ pip install -r requirements.txt
 ```
 ## Defining the attributtes to run the scrapper
 Create a .env file based on env.credentials, and set the search variables :
-    - USERNAME
-    - PASSWORD
-    - HASHTAGS (Split by comma. Ex: "#music,#mpb,#mpbbrasil)
-    - PERIOD (in hours)
+- USERNAME
+- PASSWORD
+- HASHTAGS (Split by comma. Ex: "#music,#mpb,#mpbbrasil)
+- PERIOD (in hours)
 
 ## Start the scrapper
 Run tasks.py
