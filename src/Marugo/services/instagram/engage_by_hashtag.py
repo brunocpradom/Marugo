@@ -10,6 +10,7 @@ from src.Marugo.services.instagram import (
     SEARCH_RESULTS_POSTS_FOLLOW,
     SEARCH_RESULTS_POSTS_LIKE,
     SEARCH_RESULTS_PUBLISH_COMMENT,
+    SEARCH_INPUT,
 )
 from src.Marugo.services.instagram.menu import Menu
 
@@ -40,13 +41,10 @@ class EngageByHashtag:
     def search(self, search_term):
         self.logger.info(f"Searching for : {search_term}")
 
-        search_input_xpath = "//input[@placeholder='Pesquisar']"
-        search_input_status = self.robot.get_element_status(search_input_xpath)
-
+        search_input_status = self.robot.get_element_status(SEARCH_INPUT)
         if search_input_status.get("visible") == False:
             self.click_search_button()
-
-        self.robot.input_text(search_input_xpath, search_term)
+        self.robot.input_text(SEARCH_INPUT, search_term)
         time.sleep(3) #Wait for the search results
 
         self.logger.info(f"Search for : {search_term} done")
@@ -75,7 +73,6 @@ class EngageByHashtag:
         self.logger.info("Posts links gotten")
 
     def check_if_posts_already_liked(self) -> bool:
-        "const divElement = document.querySelector('div.x6s0dn4 x78zum5 xdt5ytf xl56j7k'); "
         javascript_code = """
             const svgElement = document.querySelector('.xp7jhwk svg');
             const titleElement = svgElement.querySelector('title');
@@ -119,17 +116,6 @@ class EngageByHashtag:
         else:
             self.logger.warning("Post already followed")
 
-
-    def leave_comment(self):
-        #todo - create a list of comments - choose randomly
-        self.logger.info("Leaving comment")
-
-        time.sleep(3)
-        self.robot.input_text(SEARCH_RESULTS_POSTS_COMMENTS, "❤️")
-        self.robot.click_element_when_clickable(SEARCH_RESULTS_PUBLISH_COMMENT)
-
-        self.logger.info("Comment left")
-
     def start(self, hashtag):
         self.logger.info(f"Engaging by hashtag : {hashtag}")
 
@@ -143,6 +129,5 @@ class EngageByHashtag:
             self.robot.go_to(link)
             self.follow_profile()
             self.like_posts()
-            #self.leave_comment()
 
         self.logger.info(f"Engaging by hashtag : {hashtag} done")
